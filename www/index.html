@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html ng-app="reverseApp">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+    <title>Reverse Cells</title>
+
+    <link href="lib/ionic/css/ionic.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+
+    <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
+    <link href="css/ionic.app.css" rel="stylesheet">
+    -->
+
+    <!-- ionic/angularjs js -->
+    <script src="lib/ionic/js/ionic.bundle.js"></script>
+
+    <!-- cordova script (this will be a 404 during development) -->
+    <script src="cordova.js"></script>
+
+    <!-- your app's js -->
+    <script src="js/app.js"></script>
+    <script src="js/controllers.js"></script>
+</head>
+
+<body ng-controller="reverseController">
+<ion-side-menus>
+    <!-- Left menu -->
+    <ion-side-menu side="left">
+        <ion-header-bar align-title="center" class="bar-assertive" ng-class="{'bar-balanced': completed}">
+            <h1 class="title">New Game</h1>
+        </ion-header-bar>
+
+        <ion-content id="left_menu">
+            <div>
+                <h4 class="text-center">Grid Size</h4>
+            </div>
+            <ion-radio name="size" ng-model="current.size" ng-repeat="size_el in sizes" ng-value="size_el">
+                {{ size_el }}
+            </ion-radio>
+
+            <div>
+                <h4 class="text-center">Level</h4>
+            </div>
+            <ion-radio name="level" ng-model="current.level" ng-repeat="level_el in levels" ng-value="level_el">
+                {{ level_el }}
+            </ion-radio>
+
+            <button class="button button-positive button-block" menu-close ng-click="generate()">
+                Generate
+            </button>
+        </ion-content>
+    </ion-side-menu>
+
+    <ion-side-menu-content>
+        <ion-header-bar align-title="center" class="bar-assertive" ng-class="{'bar-balanced': completed}">
+            <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
+            <h1 class="title">
+                Reverse Cells {{ r >= 0 ? " - " + r + " x " + c + " " + current.level : "" }}
+            </h1>
+        </ion-header-bar>
+
+        <ion-content>
+            <ion-refresher pulling-text="Pull to reset level..."
+                           on-refresh="doRefresh()">
+            </ion-refresher>
+
+            <ion-list> <!-- needed for ion-refresher -->
+                <div id="content">
+                    <table ng-if="!completed">
+                        <tr ng-repeat="i in [0, matrix.length] | makeRange">
+                            <td ng-repeat="j in [0, matrix[0].length] | makeRange"
+                                ng-class="{filled: matrix[i][j]}"
+                                ng-click="clicked(i, j)">
+                            </td>
+                        </tr>
+                    </table>
+                    <div ng-if="completed">
+                        <h1 class="text-center balanced">Finito! :)</h1>
+                    </div>
+                </div>
+            </ion-list>
+        </ion-content>
+    </ion-side-menu-content>
+</ion-side-menus>
+<ion-footer-bar align-title="center" class="bar-assertive" ng-class="{'bar-balanced': completed}">
+    <div class="row">
+        <div class="col" id="moves_footer">
+            <h1 class="title">Moves: {{ moves }}</h1>
+        </div>
+        <div class="col" id="resets_footer">
+            <h1 class="title">Resets: {{ resets }}</h1>
+        </div>
+    </div>
+
+</ion-footer-bar>
+</body>
+</html>
