@@ -1,6 +1,6 @@
 var ctrls = angular.module("reverseApp.controllers", []);
 
-ctrls.controller("reverseController", ['$scope', '$ionicPopup', function ($scope, $ionicPopup)
+ctrls.controller("reverseController", ['$scope', '$localstorage', function ($scope, $localstorage)
 {
     $scope.matrix = null;
     $scope.r = -1;
@@ -10,8 +10,22 @@ ctrls.controller("reverseController", ['$scope', '$ionicPopup', function ($scope
     $scope.resets = 0;
     $scope.sizes = ['5x5', '7x7', '10x10'];
     $scope.levels = ['Easy', 'Medium', 'Hard'];
-
     $scope.current = {size: $scope.sizes[0], level: $scope.levels[0]};
+
+    $scope.restoreData = function ()
+    {
+        if ($localstorage.getObject("already_stored", false))
+        {
+            $scope.original = $localstorage.getObject("original", null);
+            $scope.matrix = $localstorage.getObject("matrix", null);
+            $scope.r = $localstorage.getObject("r", -1);
+            $scope.c = $localstorage.getObject("c", -1);
+            $scope.moves = $localstorage.getObject("moves", 0);
+            $scope.resets = $localstorage.getObject("resets", 0);
+            $scope.current = $localstorage.getObject("current", $scope.current);
+            $scope.completed = $localstorage.getObject("completed", false);
+        }
+    };
 
     function levelToRatio(level)
     {
@@ -26,6 +40,7 @@ ctrls.controller("reverseController", ['$scope', '$ionicPopup', function ($scope
 
     $scope.generate = function ()
     {
+        $localstorage.setObject("already_stored", true);
         var data = $scope.current.size.match(/(\d+)x(\d+)/);
 
         $scope.r = +data[1];
@@ -35,10 +50,20 @@ ctrls.controller("reverseController", ['$scope', '$ionicPopup', function ($scope
         $scope.matrix = $scope.generateMatrix();
         $scope.randomMatrix($scope.r * $scope.c * levelToRatio($scope.current.level));
 
+        $localstorage.setObject("r", $scope.r);
+        $localstorage.setObject("c", $scope.c);
+        $localstorage.setObject("moves", $scope.moves);
+        $localstorage.setObject("resets", $scope.resets);
+
         $scope.original = $scope.generateMatrix();
         for (var i = 0; i < $scope.r; i++)
             for (var j = 0; j < $scope.c; j++)
                 $scope.original[i][j] = $scope.matrix[i][j];
+
+        $localstorage.setObject("original", $scope.original);
+        $localstorage.setObject("matrix", $scope.matrix);
+        $localstorage.setObject("current", $scope.current);
+        $localstorage.setObject("completed", false);
 
         $scope.completed = false;
     };
@@ -53,6 +78,9 @@ ctrls.controller("reverseController", ['$scope', '$ionicPopup', function ($scope
             $scope.moves = 0;
             $scope.resets++;
         }
+        $localstorage.setObject("moves", 0);
+        $localstorage.setObject("resets", $scope.resets);
+        $localstorage.setObject("matrix", $scope.matrix);
         $scope.$broadcast('scroll.refreshComplete');
     };
 
@@ -73,9 +101,14 @@ ctrls.controller("reverseController", ['$scope', '$ionicPopup', function ($scope
     {
         if ($scope.completed)
             return;
+
         $scope.moves++;
         $scope.makeMove(r, c);
         $scope.completed = $scope.check();
+
+        $localstorage.setObject("matrix", $scope.matrix);
+        $localstorage.setObject("moves", $scope.moves);
+        $localstorage.setObject("completed", $scope.completed);
     };
 
     $scope.makeMove = function (r, c)
@@ -104,6 +137,8 @@ ctrls.controller("reverseController", ['$scope', '$ionicPopup', function ($scope
             $scope.makeMove(i, j);
         }
     };
+
+    $scope.restoreData();
 }]);
 
 ctrls.filter('makeRange', function ()
