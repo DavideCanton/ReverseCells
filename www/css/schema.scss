@@ -1,3 +1,5 @@
+$table-bg: #cccccc;
+
 #content {
   padding: 10px;
 
@@ -45,12 +47,19 @@
   }
 }
 
+.highscore-cardcontainer {
+  padding-top: 0;
+  background-color: $table-bg;
+}
+
 .highscore-table {
   width: 100%;
+  background-color: $table-bg;
   table-layout: fixed;
 
   tr {
     display: table-row;
+    background-color: $table-bg;
   }
 
   th {
@@ -61,4 +70,8 @@
     text-align: center;
     padding: 10px 0 !important;
   }
+}
+
+.light-text {
+  color: white;
 }

@@ -332,15 +332,24 @@
 .height-100 {
   height: 100%; }
 
+.highscore-cardcontainer {
+  padding-top: 0;
+  background-color: #cccccc; }
+
 .highscore-table {
   width: 100%;
+  background-color: #cccccc;
   table-layout: fixed; }
   .highscore-table tr {
-    display: table-row; }
+    display: table-row;
+    background-color: #cccccc; }
   .highscore-table th {
     font-weight: bold; }
   .highscore-table th, .highscore-table td {
     text-align: center;
     padding: 10px 0 !important; }
+
+.light-text {
+  color: white; }
 
 /*# sourceMappingURL=schema.css.map */

@@ -1,5 +1,5 @@
 <ion-view>
-    <ion-header-bar class="bar-assertive" ng-class="{'bar-balanced': completed}">
+    <ion-header-bar align-title="center" class="bar-assertive" ng-class="{'bar-balanced': completed}">
         <h1 class="title">
             {{ level.name + " - " + size.r + "x" + size.c }}
         </h1>
@@ -30,7 +30,13 @@
                         </td>
                     </tr>
                 </table>
-                <button class="button button-assertive button-block" ng-click="home()">Back to Home</button>
+
+                <div class="popup-buttons">
+                    <button class="button button-balanced" ng-click="undo()" ng-disabled="lastMove === null">
+                        Undo Last Move
+                    </button>
+                    <button class="button button-assertive" ng-click="home()">Back to Home</button>
+                </div>
             </div>
         </ion-list>
     </ion-content>
