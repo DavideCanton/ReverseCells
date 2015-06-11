@@ -11,7 +11,9 @@
   "devDependencies": {
     "bower": "^1.3.3",
     "gulp-util": "^2.2.14",
-    "shelljs": "^0.3.0"
+    "shelljs": "^0.3.0",
+    "karma-jasmine": "^x",
+    "karma-chrome-launcher": "^x"
   },
   "cordovaPlugins": [
     "org.apache.cordova.device",

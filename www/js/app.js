@@ -1,22 +1,76 @@
-// Ionic Starter App
+var app = angular.module('reverseApp', ['ionic', 'reverseApp.controllers', 'reverseApp.services', 'reverseApp.filters']);
 
-// angular.module is a global place for creating, registering and retrieving Angular modules
-// 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
-// the 2nd parameter is an array of 'requires'
-// 'starter.services' is found in services.js
-// 'starter.controllers' is found in controllers.js
-angular.module('reverseApp', ['ionic', 'reverseApp.controllers', 'reverseApp.services'])
+app.run(function ($ionicPlatform, $rootScope, highscores)
+{
+    $ionicPlatform.ready(function ()
+    {
+        // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
+        // for form inputs)
+        if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard)
+        {
+            cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+        }
+        if (window.StatusBar)
+        {
+            // org.apache.cordova.statusbar required
+            StatusBar.styleLightContent();
+        }
+    });
 
-.run(function($ionicPlatform) {
-  $ionicPlatform.ready(function() {
-    // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
-    // for form inputs)
-    if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
-      cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
-    }
-    if (window.StatusBar) {
-      // org.apache.cordova.statusbar required
-      StatusBar.styleLightContent();
-    }
-  });
+    $rootScope.makeName = function (hs_field, diff, size)
+    {
+        return hs_field.name + "-" + diff.name + "-" + size.r + "x" + size.c;
+    };
+
+    $rootScope.DIFFICULTIES = [
+        {name: 'Easy', val: 0, ratio: 0.5},
+        {name: 'Medium', val: 1, ratio: 1},
+        {name: 'Hard', val: 2, ratio: 2}
+    ];
+
+    $rootScope.SIZES = [
+        {r: 5, c: 5, id:0},
+        {r: 7, c: 7, id:1},
+        {r: 10, c: 10, id:2}];
+
+    $rootScope.HIGHSCORES = [{name: "current_time", order: "+"}];
+
+    $rootScope.SIZES.forEach(function (size)
+    {
+        $rootScope.HIGHSCORES.forEach(function (el)
+        {
+            $rootScope.DIFFICULTIES.forEach(function (diff)
+            {
+                highscores.register($rootScope.makeName(el, diff, size), 3, el.order);
+            });
+        });
+    });
+});
+
+app.config(function ($stateProvider, $urlRouterProvider)
+{
+    $urlRouterProvider.otherwise('/main');
+
+    $stateProvider
+        .state('main', {
+            url: '/main',
+            templateUrl: 'templates/main.html',
+            controller: 'mainController'
+        })
+        .state('schema', {
+            url: '/schema/:n/:s/:h',
+            templateUrl: 'templates/schema.html',
+            controller: 'reverseController',
+            cache: false
+        })
+        .state('choose_schema', {
+            url: '/choose_schema',
+            templateUrl: 'templates/choose_schema.html',
+            controller: 'chooseController'
+        })
+        .state('highscores', {
+            url: '/highscores',
+            templateUrl: 'templates/highscores.html',
+            controller: 'highscoresController'
+        })
 });

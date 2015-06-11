@@ -1,0 +1,26 @@
+<ion-view>
+    <ion-pane>
+        <div class="text-center main-text">
+            Reverse Cells!
+        </div>
+        <div class="main-buttons">
+            <div class="row">
+                <button class="button col col-offset-25 col-50 button-assertive"
+                        ng-click="continueGame()" ng-disabled="!isContinueEnabled()">Continue
+                </button>
+            </div>
+            <div class="padding"></div>
+            <div class="row">
+                <button class="button col col-offset-25 col-50 button-positive"
+                        ng-click="newGame()">New Game
+                </button>
+            </div>
+            <div class="padding"></div>
+            <div class="row">
+                <button class="button col col-offset-25 col-50 button-energized"
+                        ng-click="highscores()">High Scores
+                </button>
+            </div>
+        </div>
+    </ion-pane>
+</ion-view>

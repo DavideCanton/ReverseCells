@@ -11,16 +11,72 @@ angular.module('reverseApp.services', [])
             {
                 return $window.localStorage[key] || defaultValue;
             },
+            remove: function (key)
+            {
+                $window.localStorage.removeItem(key);
+            },
             setObject: function (key, value)
             {
                 $window.localStorage[key] = JSON.stringify(value);
             },
             getObject: function (key)
             {
-                var data = $window.localStorage[key];
-                if (data === undefined || data === null)
-                    return data;
                 return JSON.parse($window.localStorage[key] || '{}');
+            },
+            isDefined: function (key)
+            {
+                return $window.localStorage[key] !== undefined;
             }
         }
+    }])
+
+    .factory('highscores', ['$localstorage', function ($localstorage)
+    {
+        return {
+            highscores: $localstorage.getObject("highscores", {}),
+
+            register: function (name, size, crit)
+            {
+                if (this.highscores[name] === undefined)
+                    this.highscores[name] = {vals: [], size: size, crit: crit};
+                $localstorage.setObject('highscores', this.highscores);
+            },
+
+            isInHighscore: function (name, val)
+            {
+                var h = this.highscores[name];
+                if (h.vals.length < h.size)
+                    return true;
+                return h.vals.some(function (el)
+                {
+                    if (h.crit == '+' && val < el.val || h.crit == '-' && val > el.val)
+                        return true;
+                });
+            },
+
+            addToHighScore: function (name, data)
+            {
+                var h = this.highscores[name];
+                var index = h.vals.length;
+                h.vals.some(function (el, i)
+                {
+                    if (h.crit == '+' && data.val < el.val || h.crit == '-' && data.val > el.val)
+                    {
+                        index = i;
+                        return true;
+                    }
+                });
+                h.vals.splice(index, 0, data);
+                if (h.vals.length > h.size)
+                    h.vals.splice(h.size, 1);
+                $localstorage.setObject('highscores', this.highscores);
+            },
+
+            clear: function()
+            {
+                for(var name in this.highscores)
+                    if(this.highscores.hasOwnProperty(name))
+                        this.highscores[name].vals = [];
+            }
+        };
     }]);

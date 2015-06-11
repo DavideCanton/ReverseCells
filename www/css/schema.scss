@@ -1,0 +1,64 @@
+#content {
+  padding: 10px;
+
+  table {
+    width: 300px;
+    height: 300px;
+    border-collapse: collapse;
+    margin: auto;
+
+    td {
+      transition: background-color 0.1s linear;
+      border: 1px solid black;
+      background-color: white;
+      width: 30px;
+      height: 30px;
+
+      &.filled {
+        background-color: black;
+      }
+    }
+  }
+}
+
+.subheader-text {
+  font-weight: bold;
+  font-size: 1.1em;
+}
+
+.main-buttons {
+  padding: 10px;
+  width: 100%;
+  bottom: 0;
+  position: absolute;
+}
+
+.main-text {
+  padding-top: 40px;
+  font-size: 3em;
+  font-family: cursive;
+}
+
+@for $i from 0 through 100 {
+  .height-#{$i} {
+    height: percentage($i/100);
+  }
+}
+
+.highscore-table {
+  width: 100%;
+  table-layout: fixed;
+
+  tr {
+    display: table-row;
+  }
+
+  th {
+    font-weight: bold;
+  }
+
+  th, td {
+    text-align: center;
+    padding: 10px 0 !important;
+  }
+}

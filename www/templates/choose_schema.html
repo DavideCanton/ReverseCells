@@ -1,0 +1,16 @@
+<ion-view>
+    <form>
+        <h1 class="title">Grid Size</h1>
+        <ion-radio name="size" ng-model="cur.size" ng-value="val" ng-repeat="val in SIZES">
+            {{val.r + "x" + val.c}}
+        </ion-radio>
+        <h1 class="title">Difficulty</h1>
+        <ion-radio name="level" ng-model="cur.level" ng-value="val" ng-repeat="val in DIFFICULTIES">
+            {{val.name}}
+        </ion-radio>
+        <div class="popup-buttons">
+            <button class="button button-assertive padding-horizontal" ng-click="cancel()">Cancel</button>
+            <button class="button button-positive padding-horizontal" ng-click="ok()">OK</button>
+        </div>
+    </form>
+</ion-view>

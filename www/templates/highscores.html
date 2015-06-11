@@ -1,0 +1,32 @@
+<ion-view>
+    <ion-content>
+        <div ng-repeat="d in DIFFICULTIES">
+            <div ng-repeat="s in SIZES">
+                <div class="card" ng-repeat="h in HIGHSCORES">
+                    <div class="item row">
+                        <div class="col text-center subheader-text">{{ d.name | uppercase }}</div>
+                        <div class="col text-center subheader-text">{{ s.r + "x" + s.c }}</div>
+                    </div>
+                    <div class="item">
+                        <table class="highscore-table">
+                            <tr class="item">
+                                <th>Name</th>
+                                <th>Time</th>
+                                <th>Moves</th>
+                            </tr>
+                            <tr ng-repeat="item in highscores[makeName(h, d, s)].vals" class="item">
+                                <td>{{ item.name }}</td>
+                                <td>{{ item.val.time | toTime }}</td>
+                                <td>{{ item.val.moves }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="popup-buttons">
+            <button class="button button-assertive button-block" ng-click="clearHighScores()">Clear highscores</button>
+            <button class="button button-positive button-block" ng-click="home()">Back to Home</button>
+        </div>
+    </ion-content>
+</ion-view>
