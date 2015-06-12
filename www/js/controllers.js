@@ -1,3 +1,5 @@
+"use strict";
+
 angular.module("reverseApp.controllers", [])
 
     .controller("rootController", ['$scope', function ($scope)
@@ -220,7 +222,8 @@ angular.module("reverseApp.controllers", [])
                             {
                                 highscores.addToHighScore(hs_name, {
                                     name: name,
-                                    val: {time: $scope.current_time, moves: $scope.moves}
+                                    val: {time: $scope.current_time, moves: $scope.moves},
+                                    key: $scope.current_time
                                 });
                             }
                             $state.go("highscores");
@@ -301,7 +304,7 @@ angular.module("reverseApp.controllers", [])
                 highscores.clear();
             };
 
-            $ionicPlatform.registerBackButtonAction(function (e)
+            $ionicPlatform.registerBackButtonAction(function ()
             {
                 $state.go("main");
             }, 1000); // priority

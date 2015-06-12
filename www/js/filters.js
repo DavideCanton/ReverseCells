@@ -1,3 +1,5 @@
+"use strict";
+
 angular.module('reverseApp.filters', [])
 
     .filter('makeRange', function ()
@@ -24,7 +26,8 @@ angular.module('reverseApp.filters', [])
             return result;
         };
     })
-    .filter('toTime', function ()
+
+    .filter('formatTime', function ()
     {
         return function (input)
         {

@@ -2,7 +2,7 @@
 <widget id="com.mdcc.reversecells" version="0.0.1"
         xmlns="http://www.w3.org/ns/widgets"
         xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>Reverse Cell</name>
+    <name>Reverse Cells</name>
     <description>
     </description>
     <author email="" href=""/>

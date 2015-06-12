@@ -1,0 +1,16 @@
+/* various */
+.subheader-text {
+  font-weight: bold;
+  font-size: 1.1em;
+}
+
+.light-text {
+  color: white;
+}
+
+@for $i from 0 through 100 {
+  .height-#{$i} {
+    height: percentage($i/100);
+  }
+}
+

@@ -9,7 +9,7 @@
 
         <div class="col text-center subheader-text">Resets: {{ resets }}</div>
 
-        <div class="col text-center subheader-text">{{ current_time | toTime }}</div>
+        <div class="col text-center subheader-text">{{ current_time | formatTime }}</div>
     </div>
 
     <ion-content class="has-subheader">
@@ -25,8 +25,8 @@
                 <table>
                     <tr ng-repeat="i in [0, matrix.length] | makeRange">
                         <td ng-repeat="j in [0, matrix[0].length] | makeRange"
-                            ng-class="{filled: matrix[i][j]}"
                             ng-click="clicked(i, j)">
+                            <div ng-class="{filled: matrix[i][j]}"></div>
                         </td>
                     </tr>
                 </table>

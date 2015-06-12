@@ -15,14 +15,14 @@
                     <div class="item highscore-cardcontainer">
                         <table class="highscore-table">
                             <tr>
-                                <th>Name</th>
-                                <th>Time</th>
-                                <th>Moves</th>
+                                <th class="padding-top padding-bottom">Name</th>
+                                <th class="padding-top padding-bottom">Time</th>
+                                <th class="padding-top padding-bottom">Moves</th>
                             </tr>
                             <tr ng-repeat="item in vals(h,d,s)">
-                                <td>{{ item.name }}</td>
-                                <td>{{ item.val.time | toTime }}</td>
-                                <td>{{ item.val.moves }}</td>
+                                <td class="padding-top padding-bottom">{{ item.name }}</td>
+                                <td class="padding-top padding-bottom">{{ item.val.time | formatTime }}</td>
+                                <td class="padding-top padding-bottom">{{ item.val.moves }}</td>
                             </tr>
                         </table>
                     </div>

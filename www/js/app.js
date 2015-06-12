@@ -1,4 +1,7 @@
-var app = angular.module('reverseApp', ['ionic', 'reverseApp.controllers', 'reverseApp.services', 'reverseApp.filters']);
+"use strict";
+
+var app = angular.module('reverseApp', ['ionic', 'reverseApp.controllers',
+    'reverseApp.services', 'reverseApp.filters', 'uiRouterStyles']);
 
 app.run(function ($ionicPlatform, $rootScope, highscores)
 {
@@ -13,7 +16,7 @@ app.run(function ($ionicPlatform, $rootScope, highscores)
         if (window.StatusBar)
         {
             // org.apache.cordova.statusbar required
-            StatusBar.styleLightContent();
+            window.StatusBar.styleLightContent();
         }
     });
 
@@ -29,9 +32,9 @@ app.run(function ($ionicPlatform, $rootScope, highscores)
     ];
 
     $rootScope.SIZES = [
-        {r: 5, c: 5, id:0},
-        {r: 7, c: 7, id:1},
-        {r: 10, c: 10, id:2}];
+        {r: 5, c: 5, id: 0},
+        {r: 7, c: 7, id: 1},
+        {r: 10, c: 10, id: 2}];
 
     $rootScope.HIGHSCORES = [{name: "current_time", order: "+"}];
 
@@ -55,13 +58,19 @@ app.config(function ($stateProvider, $urlRouterProvider)
         .state('main', {
             url: '/main',
             templateUrl: 'templates/main.html',
-            controller: 'mainController'
+            controller: 'mainController',
+            data: {
+                css: "css/main.css"
+            }
         })
         .state('schema', {
             url: '/schema/:n/:s/:h',
             templateUrl: 'templates/schema.html',
             controller: 'reverseController',
-            cache: false
+            cache: false,
+            data: {
+                css: "css/schema.css"
+            }
         })
         .state('choose_schema', {
             url: '/choose_schema',
@@ -71,6 +80,9 @@ app.config(function ($stateProvider, $urlRouterProvider)
         .state('highscores', {
             url: '/highscores',
             templateUrl: 'templates/highscores.html',
-            controller: 'highscoresController'
-        })
+            controller: 'highscoresController',
+            data: {
+                css: "css/highscores.css"
+            }
+        });
 });

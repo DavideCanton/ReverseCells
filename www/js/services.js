@@ -1,3 +1,5 @@
+"use strict";
+
 angular.module('reverseApp.services', [])
 
     .factory('$localstorage', ['$window', function ($window)
@@ -27,7 +29,7 @@ angular.module('reverseApp.services', [])
             {
                 return $window.localStorage[key] !== undefined;
             }
-        }
+        };
     }])
 
     .factory('highscores', ['$localstorage', function ($localstorage)
@@ -49,8 +51,7 @@ angular.module('reverseApp.services', [])
                     return true;
                 return h.vals.some(function (el)
                 {
-                    if (h.crit == '+' && val < el.val || h.crit == '-' && val > el.val)
-                        return true;
+                    return (h.crit == '+' && val < el.key || h.crit == '-' && val > el.key);
                 });
             },
 
@@ -60,11 +61,12 @@ angular.module('reverseApp.services', [])
                 var index = h.vals.length;
                 h.vals.some(function (el, i)
                 {
-                    if (h.crit == '+' && data.val < el.val || h.crit == '-' && data.val > el.val)
+                    if (h.crit == '+' && data.key < el.key || h.crit == '-' && data.key > el.key)
                     {
                         index = i;
                         return true;
                     }
+                    return false;
                 });
                 h.vals.splice(index, 0, data);
                 if (h.vals.length > h.size)
@@ -72,10 +74,10 @@ angular.module('reverseApp.services', [])
                 $localstorage.setObject('highscores', this.highscores);
             },
 
-            clear: function()
+            clear: function ()
             {
-                for(var name in this.highscores)
-                    if(this.highscores.hasOwnProperty(name))
+                for (var name in this.highscores)
+                    if (this.highscores.hasOwnProperty(name))
                         this.highscores[name].vals = [];
             }
         };
