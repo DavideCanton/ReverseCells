@@ -2,33 +2,22 @@
 
 angular.module("reverseApp.controllers", [])
 
-    .controller("rootController", ['$scope', function ($scope)
+    .controller("rootController", ['$scope', '$state', function ($scope, $state)
     {
-
+        $scope.goTo = function (name)
+        {
+            $state.go(name);
+        };
     }])
 
-    .controller("mainController", ['$scope', '$state', '$localstorage',
-        function ($scope, $state, $localstorage)
+    .controller("mainController", ['$scope', '$localstorage',
+        function ($scope, $localstorage)
         {
             $scope.isContinueEnabled = function ()
             {
                 return $localstorage.isDefined("matrix");
             };
 
-            $scope.continueGame = function ()
-            {
-                $state.go("schema");
-            };
-
-            $scope.newGame = function ()
-            {
-                $state.go("choose_schema");
-            };
-
-            $scope.highscores = function ()
-            {
-                $state.go("highscores");
-            };
         }])
 
     .controller('chooseController', ['$scope', '$state', function ($scope, $state)
@@ -37,7 +26,7 @@ angular.module("reverseApp.controllers", [])
 
         $scope.cancel = function ()
         {
-            $state.go("main");
+            $scope.goTo("main");
         };
 
         $scope.ok = function ()
@@ -51,9 +40,9 @@ angular.module("reverseApp.controllers", [])
     }])
 
     .controller("reverseController", ['$scope', '$stateParams', '$interval',
-        'highscores', '$state', '$ionicPopup', '$localstorage', '$rootScope',
-        function ($scope, $stateParams, $interval, highscores, $state, $ionicPopup,
-                  $localstorage, $rootScope)
+        'highscores', '$ionicPopup', '$localstorage', '$rootScope', '$ionicPlatform',
+        function ($scope, $stateParams, $interval, highscores, $ionicPopup,
+                  $localstorage, $rootScope, $ionicPlatform)
         {
             $scope.matrix = null;
             $scope.size = $scope.SIZES[+$stateParams.s];
@@ -65,11 +54,25 @@ angular.module("reverseApp.controllers", [])
             $scope.newGame = +$stateParams.n;
             $scope.lastMove = null;
 
-            $rootScope.$on('$stateChangeStart',
-                function ()
+            function startTimer()
+            {
+                $scope.timer = $interval(function ()
                 {
-                    $interval.cancel($scope.timer);
-                });
+                    $scope.current_time++;
+                    $scope.store("current_time");
+                }, 1000);
+            }
+
+            function stopTimer()
+            {
+                $interval.cancel($scope.timer);
+            }
+
+            $rootScope.$on('$stateChangeStart', stopTimer);
+
+            $ionicPlatform.on('resume', startTimer);
+
+            $ionicPlatform.on('pause', stopTimer);
 
             $scope.undo = function ()
             {
@@ -226,7 +229,7 @@ angular.module("reverseApp.controllers", [])
                                     key: $scope.current_time
                                 });
                             }
-                            $state.go("highscores");
+                            $scope.goTo("highscores");
                         });
                     }
                 }
@@ -265,29 +268,20 @@ angular.module("reverseApp.controllers", [])
 
             $scope.home = function ()
             {
-                $state.go("main");
+                $scope.goTo("main");
             };
 
             if ($localstorage.isDefined("matrix") && !$scope.newGame)
                 $scope.restoreData();
             else
                 $scope.generate();
-
-            $scope.timer = $interval(function ()
-            {
-                $scope.current_time++;
-                $scope.store("current_time");
-            }, 1000);
+            startTimer();
         }])
+
     .controller('highscoresController', ['$scope', 'highscores', '$state', '$ionicPlatform',
         function ($scope, highscores, $state, $ionicPlatform)
         {
             $scope.highscores = highscores.highscores;
-
-            $scope.home = function ()
-            {
-                $state.go("main");
-            };
 
             $scope.isEmpty = function (h, d, s)
             {
@@ -306,6 +300,10 @@ angular.module("reverseApp.controllers", [])
 
             $ionicPlatform.registerBackButtonAction(function ()
             {
-                $state.go("main");
+                $scope.goTo("main");
             }, 1000); // priority
-        }]);
+        }])
+
+    .controller('howtoplayController', ['$scope', function ($scope)
+    {
+    }]);

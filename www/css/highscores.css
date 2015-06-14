@@ -1,0 +1,18 @@
+/* highscores.html */
+.highscore-cardcontainer {
+  padding-top: 0;
+  background-color: #cccccc; }
+
+.highscore-table {
+  width: 100%;
+  background-color: #cccccc;
+  table-layout: fixed; }
+  .highscore-table tr {
+    display: table-row;
+    background-color: #cccccc; }
+  .highscore-table th {
+    font-weight: bold; }
+  .highscore-table th, .highscore-table td {
+    text-align: center; }
+
+/*# sourceMappingURL=highscores.css.map */

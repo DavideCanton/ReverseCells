@@ -84,5 +84,9 @@ app.config(function ($stateProvider, $urlRouterProvider)
             data: {
                 css: "css/highscores.css"
             }
+        }).state('howtoplay', {
+            url: '/howtoplay',
+            templateUrl: 'templates/howtoplay.html',
+            controller: 'howtoplayController'
         });
 });
