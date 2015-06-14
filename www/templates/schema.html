@@ -26,7 +26,12 @@
                     <tr ng-repeat="i in [0, matrix.length] | makeRange">
                         <td ng-repeat="j in [0, matrix[0].length] | makeRange"
                             ng-click="clicked(i, j)">
-                            <div ng-class="{filled: matrix[i][j]}"></div>
+                            <div class="cell-container" ng-class="{flipped: matrix[i][j]}">
+                                <div class="cell-flipper">
+                                    <div class="on-cell"></div>
+                                    <div class="off-cell"></div>
+                                </div>
+                            </div>
                         </td>
                     </tr>
                 </table>

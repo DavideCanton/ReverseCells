@@ -120,6 +120,7 @@ angular.module("reverseApp.controllers", [])
                 $scope.store("level");
                 $scope.store("current_time");
                 $scope.store("size");
+                $scope.store("lastMove");
             };
 
             $scope.restoreData = function ()
@@ -132,6 +133,7 @@ angular.module("reverseApp.controllers", [])
                 $scope.restore("level", null);
                 $scope.restore("current_time", 0);
                 $scope.restore("size", null);
+                $scope.restore("lastMove", null);
             };
 
             $scope.clearData = function ()
@@ -144,6 +146,7 @@ angular.module("reverseApp.controllers", [])
                 $localstorage.remove("level");
                 $localstorage.remove("current_time");
                 $localstorage.remove("size");
+                $localstorage.remove("lastMove");
             };
 
             $scope.refreshSchema = function ()
@@ -202,6 +205,7 @@ angular.module("reverseApp.controllers", [])
                 $scope.store("moves");
                 $scope.store("matrix");
                 $scope.store("completed");
+                $scope.store("lastMove");
 
                 if ($scope.completed)
                 {
