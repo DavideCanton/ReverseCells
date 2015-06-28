@@ -5,12 +5,12 @@
     <ion-content>
         <form>
             <h3 class="title padding-top padding-left">Grid Size</h3>
-            <ion-radio name="size" ng-model="cur.size" ng-value="val" ng-repeat="val in SIZES">
-                {{val.r + "x" + val.c}}
+            <ion-radio name="size" ng-model="cur.size" ng-value="val" ng-repeat="val in ::SIZES">
+                {{::val.r + "x" + val.c}}
             </ion-radio>
             <h3 class="title padding-top padding-left">Difficulty</h3>
-            <ion-radio name="level" ng-model="cur.level" ng-value="val" ng-repeat="val in DIFFICULTIES">
-                {{val.name}}
+            <ion-radio name="level" ng-model="cur.level" ng-value="val" ng-repeat="val in ::DIFFICULTIES">
+                {{::val.name}}
             </ion-radio>
             <div class="popup-buttons">
                 <button class="button button-assertive padding-horizontal" ng-click="cancel()">Cancel</button>

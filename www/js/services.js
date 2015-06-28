@@ -41,6 +41,8 @@ angular.module('reverseApp.services', [])
             {
                 if (this.highscores[name] === undefined)
                     this.highscores[name] = {vals: [], size: size, crit: crit};
+                else
+                    this.highscores[name].size = size;
                 $localstorage.setObject('highscores', this.highscores);
             },
 
@@ -79,6 +81,7 @@ angular.module('reverseApp.services', [])
                 for (var name in this.highscores)
                     if (this.highscores.hasOwnProperty(name))
                         this.highscores[name].vals = [];
+                $localstorage.setObject('highscores', this.highscores);
             }
         };
     }]);

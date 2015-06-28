@@ -282,8 +282,8 @@ angular.module("reverseApp.controllers", [])
             startTimer();
         }])
 
-    .controller('highscoresController', ['$scope', 'highscores', '$state', '$ionicPlatform',
-        function ($scope, highscores, $state, $ionicPlatform)
+    .controller('highscoresController', ['$scope', 'highscores', '$state', '$ionicPlatform', '$ionicPopup',
+        function ($scope, highscores, $state, $ionicPlatform, $ionicPopup)
         {
             $scope.highscores = highscores.highscores;
 
@@ -299,7 +299,14 @@ angular.module("reverseApp.controllers", [])
 
             $scope.clearHighScores = function ()
             {
-                highscores.clear();
+                $ionicPopup.confirm({
+                    title: 'Are you sure?',
+                    template: 'This will reset your highscores! Are you sure?'
+                }).then(function (res)
+                {
+                    if (res)
+                        highscores.clear();
+                });
             };
 
             $ionicPlatform.registerBackButtonAction(function ()

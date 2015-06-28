@@ -25,6 +25,8 @@ app.run(function ($ionicPlatform, $rootScope, highscores)
         return hs_field.name + "-" + diff.name + "-" + size.r + "x" + size.c;
     };
 
+    $rootScope.HIGHSCORES_SIZE = 3;
+
     $rootScope.DIFFICULTIES = [
         {name: 'Easy', val: 0, ratio: 0.5},
         {name: 'Medium', val: 1, ratio: 1},
@@ -44,7 +46,7 @@ app.run(function ($ionicPlatform, $rootScope, highscores)
         {
             $rootScope.DIFFICULTIES.forEach(function (diff)
             {
-                highscores.register($rootScope.makeName(el, diff, size), 3, el.order);
+                highscores.register($rootScope.makeName(el, diff, size), $rootScope.HIGHSCORES_SIZE, el.order);
             });
         });
     });
