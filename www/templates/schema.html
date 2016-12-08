@@ -1,5 +1,8 @@
 <ion-view>
     <ion-header-bar align-title="center" class="bar-assertive" ng-class="{'bar-balanced': completed}">
+        <button class="button button-clear" ng-click="rootCtrl.tryGoTo('main')">
+            <i class="icon ion-android-arrow-back"></i>
+        </button>
         <h1 class="title">
             {{:: level.name + " - " + size.r + "x" + size.c }}
         </h1>
@@ -40,9 +43,10 @@
                     <button class="button button-balanced" ng-click="undo()" ng-disabled="lastMove === null">
                         Undo Last Move
                     </button>
-                    <button class="button button-assertive" ng-click="home()">Back to Home</button>
+                    <button class="button button-assertive" ng-click="pause()">Pause</button>
                 </div>
             </div>
         </ion-list>
     </ion-content>
+
 </ion-view>

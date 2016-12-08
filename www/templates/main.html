@@ -1,31 +1,24 @@
 <ion-view>
     <ion-pane>
-        <div>
-            <div class="text-center title-div"></div>
-        </div>
-        <div class="main-buttons">
-            <div class="row">
-                <button class="button col col-offset-10 col-80 button-assertive"
-                        ng-click="goTo('schema')" ng-disabled="!isContinueEnabled()">Continue
-                </button>
+        <div class="row responsive-lg main-row">
+            <div class="col img-col">
+                <div class="img-title"></div>
             </div>
-            <div class="padding-bottom"></div>
-            <div class="row">
-                <button class="button col col-offset-10 col-80 button-positive"
-                        ng-click="goTo('choose_schema')">New Game
-                </button>
-            </div>
-            <div class="padding-bottom"></div>
-            <div class="row">
-                <button class="button col col-offset-10 col-80 button-balanced"
-                        ng-click="goTo('highscores')">High Scores
-                </button>
-            </div>
-            <div class="padding-bottom"></div>
-            <div class="row">
-                <button class="button col col-offset-10 col-80 button-royal"
-                        ng-click="goTo('howtoplay')">How to Play
-                </button>
+            <div class="col button-col">
+                <div class="row button-row">
+                    <button class="button button-assertive"
+                            ui-sref="schema" ng-disabled="!mainCtrl.isContinueEnabled()">Continue
+                    </button>
+                    <button class="button button-positive"
+                            ui-sref="choose_schema">New Game
+                    </button>
+                    <button class="button button-balanced"
+                            ui-sref="highscores">High Scores
+                    </button>
+                    <button class="button button-royal"
+                            ui-sref="howtoplay">How to Play
+                    </button>
+                </div>
             </div>
         </div>
     </ion-pane>

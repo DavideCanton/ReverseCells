@@ -36,4 +36,13 @@
           transform: rotateY(180deg);
           background-color: black; }
 
+.over-backdrop {
+  position: absolute;
+  z-index: 15;
+  width: 300px;
+  height: 300px;
+  top: calc(50% - 150px);
+  left: calc(50% - 150px);
+  background-color: white; }
+
 /*# sourceMappingURL=schema.css.map */

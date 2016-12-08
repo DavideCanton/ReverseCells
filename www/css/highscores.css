@@ -8,7 +8,6 @@
   background-color: #cccccc;
   table-layout: fixed; }
   .highscore-table tr {
-    display: table-row;
     background-color: #cccccc; }
   .highscore-table th {
     font-weight: bold; }

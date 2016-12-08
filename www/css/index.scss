@@ -1,35 +1,44 @@
 /* various */
-.subheader-text {
-  font-weight: bold;
-  font-size: 1.1em;
+.subheader-text
+{
+    font-weight: bold;
+    font-size: 1.1em;
 }
 
-.light-text {
-  color: white;
+.light-text
+{
+    color: white;
 }
 
-@for $i from 0 through 100 {
-  .height-#{$i} {
-    height: percentage($i/100);
-  }
+@for $i from 0 through 100
+{
+    .height-#{$i}
+    {
+        height: percentage($i/100);
+    }
 }
 
-.item.wrap, .item-content.wrap {
-  white-space: normal;
+.item.wrap, .item-content.wrap
+{
+    white-space: normal;
 }
 
-.img-vert-middle {
-  vertical-align: middle;
+.img-vert-middle
+{
+    vertical-align: middle;
 }
 
-.large-text {
-  font-size: 16px
+.large-text
+{
+    font-size: 16px
 }
 
-.caption{
-  display: block;
+.caption
+{
+    display: block;
 }
 
-.auto-margin {
-  margin: auto;
+.auto-margin
+{
+    margin: auto;
 }

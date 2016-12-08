@@ -16,7 +16,8 @@ module.exports = function (config)
             'www/lib/angular-mocks/angular-mocks.js',
             'www/lib/ionic/js/ionic.js',
             'www/lib/ionic/js/ionic-angular.js',
-            'www/js/*.js',
+            'www/lib/underscore/underscore.js',
+            '../www/ts/*.js',
             'tests/**/*.js'
         ],
 

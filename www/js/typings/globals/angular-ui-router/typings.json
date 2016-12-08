@@ -1,0 +1,8 @@
+{
+  "resolution": "main",
+  "tree": {
+    "src": "https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/47310a628aa6d2d7e58ac0463a6a2e0918954d9e/angular-ui-router/angular-ui-router.d.ts",
+    "raw": "registry:dt/angular-ui-router#1.1.5+20161110053620",
+    "typings": "https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/47310a628aa6d2d7e58ac0463a6a2e0918954d9e/angular-ui-router/angular-ui-router.d.ts"
+  }
+}

@@ -1,11 +1,15 @@
 <ion-view>
-    <ion-header-bar align-title="center" class="bar-energized">
+    <ion-header-bar align-title="center" class="bar-balanced">
+        <button class="button button-clear" ui-sref="main">
+            <i class="icon ion-android-arrow-back"></i>
+        </button>
+
         <h1 class="title">Highscores</h1>
     </ion-header-bar>
     <ion-content>
         <div ng-repeat="d in ::DIFFICULTIES">
             <div ng-repeat="s in ::SIZES">
-                <div class="card" ng-repeat="h in ::HIGHSCORES" ng-if="!isEmpty(h,d,s)">
+                <div class="card" ng-repeat="h in ::HIGHSCORES" ng-if="!highscoresCtrl.isEmpty(h,d,s)">
 
                     <div class="item row royal-bg">
                         <div class="col text-center subheader-text light-text">{{:: d.name | uppercase }}</div>
@@ -19,7 +23,7 @@
                                 <th class="padding-top padding-bottom">Time</th>
                                 <th class="padding-top padding-bottom">Moves</th>
                             </tr>
-                            <tr ng-repeat="item in vals(h,d,s)">
+                            <tr ng-repeat="item in highscoresCtrl.vals(h,d,s)">
                                 <!-- se name fa overflow? -->
                                 <td class="padding-top padding-bottom">{{ ::item.name }}</td>
                                 <td class="padding-top padding-bottom">{{ ::item.val.time | formatTime }}</td>
@@ -32,8 +36,7 @@
             </div>
         </div>
         <div class="popup-buttons">
-            <button class="button button-assertive button-block" ng-click="clearHighScores()">Clear highscores</button>
-            <button class="button button-positive button-block" ng-click="goTo('main')">Back to Home</button>
+            <button class="button button-assertive button-block" ng-click="highscoresCtrl.clearHighScores()">Clear highscores</button>
         </div>
     </ion-content>
 </ion-view>

@@ -2,26 +2,30 @@
 
 $table-bg: #cccccc;
 
-.highscore-cardcontainer {
-  padding-top: 0;
-  background-color: $table-bg;
+.highscore-cardcontainer
+{
+    padding-top: 0;
+    background-color: $table-bg;
 }
 
-.highscore-table {
-  width: 100%;
-  background-color: $table-bg;
-  table-layout: fixed;
-
-  tr {
-    display: table-row;
+.highscore-table
+{
+    width: 100%;
     background-color: $table-bg;
-  }
+    table-layout: fixed;
 
-  th {
-    font-weight: bold;
-  }
+    tr
+    {
+        background-color: $table-bg;
+    }
 
-  th, td {
-    text-align: center;
-  }
+    th
+    {
+        font-weight: bold;
+    }
+
+    th, td
+    {
+        text-align: center;
+    }
 }

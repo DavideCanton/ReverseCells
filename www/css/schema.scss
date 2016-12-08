@@ -1,55 +1,75 @@
 /* schema.html */
-#content {
-  padding: 10px;
+#content
+{
+    padding: 10px;
 
-  table {
+    table
+    {
+        width: 300px;
+        height: 300px;
+        border-collapse: collapse;
+        margin: auto;
+
+        td
+        {
+            border: 1px solid black;
+            width: 30px;
+            height: 30px;
+            padding: 1px;
+
+            .cell-container
+            {
+                width: 100%;
+                height: 100%;
+
+                .cell-flipper
+                {
+                    transition: 0.5s;
+                    transform-style: preserve-3d;
+                    width: 100%;
+                    height: 100%;
+                }
+
+                &.flipped .cell-flipper
+                {
+                    transform: rotateY(180deg);
+                }
+
+                .on-cell, .off-cell
+                {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    backface-visibility: hidden;
+                }
+
+                .off-cell
+                {
+                    z-index: 2;
+
+                    transform: rotateY(0deg);
+                    background-color: white;
+                }
+
+                .on-cell
+                {
+                    transform: rotateY(180deg);
+                    background-color: black;
+                }
+            }
+        }
+    }
+}
+
+.over-backdrop {
+    position: absolute;
+    z-index: 15;
     width: 300px;
     height: 300px;
-    border-collapse: collapse;
-    margin: auto;
+    top: calc(50% - 150px);
+    left: calc(50% - 150px);
 
-    td {
-      border: 1px solid black;
-      width: 30px;
-      height: 30px;
-      padding: 1px;
-
-      .cell-container {
-        width: 100%;
-        height: 100%;
-
-        .cell-flipper {
-          transition: 0.5s;
-          transform-style: preserve-3d;
-          width: 100%;
-          height: 100%;
-        }
-
-        &.flipped .cell-flipper {
-          transform: rotateY(180deg);
-        }
-
-        .on-cell, .off-cell {
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          backface-visibility: hidden;
-        }
-
-        .off-cell {
-          z-index: 2;
-
-          transform: rotateY(0deg);
-          background-color: white;
-        }
-
-        .on-cell {
-          transform: rotateY(180deg);
-          background-color: black;
-        }
-      }
-    }
-  }
+    background-color: white;
 }
