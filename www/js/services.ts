@@ -45,14 +45,22 @@ class LocalStorageService
 
 interface IHighscoreVal
 {
+    name : string;
+    val : IHighscoreValObj;
     key : number;
+}
+
+interface IHighscoreValObj
+{
+    time: number;
+    moves: number;
 }
 
 interface IHighscoreOption
 {
-    vals : IHighscoreVal[],
-    size : number,
-    sortCrit : string
+    vals : IHighscoreVal[];
+    size : number;
+    sortCrit : string;
 }
 
 interface IHighscoreMap

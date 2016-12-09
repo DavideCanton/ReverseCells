@@ -43,7 +43,7 @@ app.run(($ionicPlatform: IonicPlatformService, $rootScope : any, highscores) =>
         }
     });
 
-    $rootScope.makeName = (hs_field, diff : IDifficulty, size : ISize) =>
+    $rootScope.makeName = (hs_field: IHighScore, diff : IDifficulty, size : ISize) =>
     {
         return hs_field.name + "-" + diff.name + "-" + size.r + "x" + size.c;
     };
@@ -100,7 +100,7 @@ app.config(($stateProvider : IStateProvider, $urlRouterProvider : IUrlRouterProv
         .state('schema', {
             url: '/schema/:n/:s/:h',
             templateUrl: 'templates/schema.html',
-            controller: 'reverseController',
+            controller: 'reverseController as reverseCtrl',
             cache: false,
             data: {
                 css: "css/schema.css"

@@ -65,7 +65,7 @@ var HighscoresController = (function () {
         return this.vals(h, d, s).length === 0;
     };
     HighscoresController.prototype.vals = function (h, d, s) {
-        return this.highscores[this.$scope.makeName(h, d, s)].vals;
+        return this.highscoresArray[this.$scope.makeName(h, d, s)].vals;
     };
     HighscoresController.prototype.clearHighScores = function () {
         var _this = this;
@@ -81,202 +81,207 @@ var HighscoresController = (function () {
     HighscoresController.$inject = ['$scope', 'highscores', '$state', '$ionicPlatform', '$ionicPopup'];
     return HighscoresController;
 }());
+var ReverseController = (function () {
+    function ReverseController($scope, $stateParams, $interval, highscores, $ionicPopup, $localstorage, $rootScope, $state, $ionicPlatform, $ionicBackdrop) {
+        var _this = this;
+        this.$scope = $scope;
+        this.$stateParams = $stateParams;
+        this.$interval = $interval;
+        this.highscores = highscores;
+        this.$ionicPopup = $ionicPopup;
+        this.$localstorage = $localstorage;
+        this.$rootScope = $rootScope;
+        this.$state = $state;
+        this.$ionicPlatform = $ionicPlatform;
+        this.$ionicBackdrop = $ionicBackdrop;
+        this.completed = false;
+        this.moves = 0;
+        this.resets = 0;
+        this.current_time = 0;
+        this.paused = false;
+        this.lastMove = null;
+        this.max_name_length = 10;
+        this.size = $scope.SIZES[parseInt($stateParams.s, 10)];
+        this.level = $scope.DIFFICULTIES[parseInt($stateParams.h, 10)];
+        this.newGame = !!parseInt($stateParams.n, 10);
+        $rootScope.$on('$stateChangeStart', function () { return _this.stopTimer; });
+        $ionicPlatform.on('resume', function () { return _this.startTimer; });
+        $ionicPlatform.on('pause', function () { return _this.stopTimer; });
+        if ($localstorage.isDefined("matrix") && !this.newGame)
+            this.restoreData();
+        else
+            this.generate();
+        this.startTimer();
+    }
+    ReverseController.prototype.startTimer = function () {
+        var _this = this;
+        this.timer = this.$interval(function () {
+            _this.current_time++;
+            _this.store("current_time");
+        }, 1000);
+    };
+    ReverseController.prototype.stopTimer = function () {
+        this.$interval.cancel(this.timer);
+    };
+    ReverseController.prototype.undo = function () {
+        if (this.lastMove === null)
+            return;
+        this.makeMove.apply(this, this.lastMove);
+        this.store("matrix");
+        this.lastMove = null;
+    };
+    ReverseController.prototype.generate = function () {
+        this.moves = 0;
+        this.resets = 0;
+        this.matrix = this.generateMatrix();
+        this.randomMatrix(this.size.r * this.size.c * this.level.ratio);
+        this.original = this.generateMatrix();
+        for (var i = 0; i < this.size.r; i++)
+            this.original[i] = this.matrix[i].slice();
+        this.completed = false;
+        this.saveData();
+    };
+    ReverseController.prototype.store = function (name) {
+        this.$localstorage.setObject(name, this[name]);
+    };
+    ReverseController.prototype.restore = function (name, def_value) {
+        this[name] = this.$localstorage.getObject(name, def_value);
+    };
+    ReverseController.prototype.saveData = function () {
+        var _this = this;
+        ["moves", "resets", "matrix", "original", "completed", "level", "current_time", "size", "lastMove"]
+            .forEach(function (el) { return _this.store(el); });
+    };
+    ReverseController.prototype.restoreData = function () {
+        this.restore("moves", 0);
+        this.restore("resets", 0);
+        this.restore("matrix", null);
+        this.restore("original", null);
+        this.restore("completed", false);
+        this.restore("level", null);
+        this.restore("current_time", 0);
+        this.restore("size", null);
+        this.restore("lastMove", null);
+    };
+    ReverseController.prototype.clearData = function () {
+        var _this = this;
+        ["moves", "resets", "matrix", "original", "completed", "level", "current_time", "size", "lastMove"]
+            .forEach(function (el) { return _this.$localstorage.remove(el); });
+    };
+    ReverseController.prototype.refreshSchema = function () {
+        if (this.original && !this.completed) {
+            this.lastMove = null;
+            for (var i = 0; i < this.size.r; i++)
+                this.matrix[i] = this.original[i].slice();
+            this.moves = 0;
+            this.resets++;
+            this.store("moves");
+            this.store("resets");
+            this.store("matrix");
+        }
+    };
+    ReverseController.prototype.doRefresh = function () {
+        var _this = this;
+        this.$ionicPopup.confirm({
+            title: 'Are you sure?',
+            template: 'This will reset your progress! Are you sure?'
+        }).then(function (res) {
+            if (res)
+                _this.refreshSchema();
+            _this.$scope.$broadcast('scroll.refreshComplete');
+        });
+    };
+    ReverseController.prototype.generateMatrix = function () {
+        var matrix = [];
+        var row = [];
+        for (var j = 0; j < this.size.c; j++)
+            row.push(false);
+        for (var i = 0; i < this.size.r; i++)
+            matrix.push(row.slice(0));
+        return matrix;
+    };
+    ReverseController.prototype.clicked = function (r, c) {
+        var _this = this;
+        if (this.completed)
+            return;
+        this.moves++;
+        this.makeMove(r, c);
+        this.lastMove = [r, c];
+        this.completed = this.check();
+        this.store("moves");
+        this.store("matrix");
+        this.store("completed");
+        this.store("lastmove");
+        if (this.completed) {
+            this.lastMove = null;
+            this.$interval.cancel(this.timer);
+            this.clearData();
+            var hs_name_1 = this.$scope.makeName(this.$scope.HIGHSCORES[0], this.level, this.size);
+            var timerecord = this.highscores.isInHighscore(hs_name_1, this.current_time);
+            if (timerecord) {
+                var data_1 = this.$scope.data = {};
+                this.$ionicPopup.show({
+                    title: 'record!',
+                    template: '<label>Enter your name:<input ng-model="data.name" type="text" placeholder="your name" maxlength="' + this.max_name_length + '"></label>',
+                    scope: this.$scope,
+                    buttons: [
+                        {
+                            text: 'Cancel',
+                            type: 'button-assertive'
+                        },
+                        {
+                            text: '<b>OK</b>',
+                            type: 'button-positive',
+                            onTap: function () { return data_1.name; }
+                        }
+                    ]
+                }).then(function (name) {
+                    delete _this.$scope.data;
+                    if (!name)
+                        _this.$state.go("main");
+                    else {
+                        _this.highscores.addToHighScore(hs_name_1, {
+                            name: name.substring(0, _this.max_name_length),
+                            val: { time: _this.current_time, moves: _this.moves },
+                            key: _this.current_time
+                        });
+                        _this.$state.go("highscores");
+                    }
+                });
+            }
+        }
+    };
+    ReverseController.prototype.makeMove = function (r, c) {
+        for (var i = r - 1; i <= r + 1; i++)
+            for (var j = c - 1; j <= c + 1; j++)
+                if (i >= 0 && i < this.size.r && j >= 0 && j < this.size.c)
+                    this.matrix[i][j] = !this.matrix[i][j];
+    };
+    ReverseController.prototype.check = function () {
+        return !_.some(this.matrix, function (row) { return _.some(row); });
+    };
+    ;
+    ReverseController.prototype.randomMatrix = function (moves) {
+        var ubound = this.size.r * this.size.c;
+        for (var x = 0; x < moves; x++) {
+            var m = Math.floor(Math.random() * ubound);
+            var i = Math.floor(m / this.size.c);
+            var j = m % this.size.c;
+            this.makeMove(i, j);
+        }
+    };
+    ReverseController.prototype.home = function () {
+        this.$state.go("main");
+    };
+    ReverseController.$inject = ['$scope', '$stateParams', '$interval',
+        'highscores', '$ionicPopup', '$localstorage', '$rootScope', '$state', '$ionicPlatform', '$ionicBackdrop'];
+    return ReverseController;
+}());
 angular.module("reverseApp.controllers", [])
     .controller("rootController", RootController)
     .controller("mainController", MainController)
     .controller('chooseController', ChooseController)
-    .controller("reverseController", ['$scope', '$stateParams', '$interval',
-    'highscores', '$ionicPopup', '$localstorage', '$rootScope', '$ionicPlatform', '$ionicBackdrop',
-    function ($scope, $stateParams, $interval, highscores, $ionicPopup, $localstorage, $rootScope, $ionicPlatform, $ionicBackdrop) {
-        $scope.matrix = null;
-        $scope.size = $scope.SIZES[+$stateParams.s];
-        $scope.completed = false;
-        $scope.moves = 0;
-        $scope.resets = 0;
-        $scope.level = $scope.DIFFICULTIES[+$stateParams.h];
-        $scope.current_time = 0;
-        $scope.paused = false;
-        $scope.newGame = +$stateParams.n;
-        $scope.lastMove = null;
-        function startTimer() {
-            $scope.timer = $interval(function () {
-                $scope.current_time++;
-                $scope.store("current_time");
-            }, 1000);
-        }
-        function stopTimer() {
-            $interval.cancel($scope.timer);
-        }
-        $rootScope.$on('$stateChangeStart', stopTimer);
-        $ionicPlatform.on('resume', startTimer);
-        $ionicPlatform.on('pause', stopTimer);
-        $scope.undo = function () {
-            if ($scope.lastMove === null)
-                return;
-            $scope.makeMove.apply(this, $scope.lastMove);
-            $scope.store("matrix");
-            $scope.lastMove = null;
-        };
-        $scope.pause = function () {
-            //$ionicBackdrop.retain();
-            // $scope.paused = true;
-        };
-        $scope.resume = function () {
-            $scope.paused = false;
-            $ionicBackdrop.release();
-        };
-        $scope.generate = function () {
-            $scope.moves = 0;
-            $scope.resets = 0;
-            $scope.matrix = $scope.generateMatrix();
-            $scope.randomMatrix($scope.size.r * $scope.size.c * $scope.level.ratio);
-            $scope.original = $scope.generateMatrix();
-            for (var i = 0; i < $scope.size.r; i++)
-                $scope.original[i] = $scope.matrix[i].slice();
-            $scope.completed = false;
-            $scope.saveData();
-        };
-        $scope.store = function (name) {
-            $localstorage.setObject(name, $scope[name]);
-        };
-        $scope.restore = function (name, def_value) {
-            $scope[name] = $localstorage.getObject(name, def_value);
-        };
-        $scope.saveData = function () {
-            ["moves", "resets", "matrix", "original",
-                "completed", "level", "current_time", "size", "lastMove"].forEach(function (el) {
-                $scope.store(el);
-            });
-        };
-        $scope.restoreData = function () {
-            $scope.restore("moves", 0);
-            $scope.restore("resets", 0);
-            $scope.restore("matrix", null);
-            $scope.restore("original", null);
-            $scope.restore("completed", false);
-            $scope.restore("level", null);
-            $scope.restore("current_time", 0);
-            $scope.restore("size", null);
-            $scope.restore("lastMove", null);
-        };
-        $scope.clearData = function () {
-            ["moves", "resets", "matrix", "original",
-                "completed", "level", "current_time", "size", "lastMove"].forEach(function (el) {
-                $localstorage.remove(el);
-            });
-        };
-        $scope.refreshSchema = function () {
-            if ($scope.original && !$scope.completed) {
-                $scope.lastMove = null;
-                for (var i = 0; i < $scope.size.r; i++)
-                    $scope.matrix[i] = $scope.original[i].slice();
-                $scope.moves = 0;
-                $scope.resets++;
-                $scope.store("moves");
-                $scope.store("resets");
-                $scope.store("matrix");
-            }
-        };
-        $scope.doRefresh = function () {
-            $ionicPopup.confirm({
-                title: 'Are you sure?',
-                template: 'This will reset your progress! Are you sure?'
-            }).then(function (res) {
-                if (res)
-                    $scope.refreshSchema();
-                $scope.$broadcast('scroll.refreshComplete');
-            });
-        };
-        $scope.generateMatrix = function () {
-            var matrix = [];
-            var row = [];
-            for (var j = 0; j < $scope.size.c; j++)
-                row.push(false);
-            for (var i = 0; i < $scope.size.r; i++)
-                matrix.push(row.slice(0));
-            return matrix;
-        };
-        $scope.clicked = function (r, c) {
-            if ($scope.completed)
-                return;
-            $scope.moves++;
-            $scope.makeMove(r, c);
-            $scope.lastMove = [r, c];
-            $scope.completed = $scope.check();
-            $scope.store("moves");
-            $scope.store("matrix");
-            $scope.store("completed");
-            $scope.store("lastMove");
-            if ($scope.completed) {
-                $scope.lastMove = null;
-                $interval.cancel($scope.timer);
-                $scope.clearData();
-                var hs_name = $scope.makeName($scope.HIGHSCORES[0], $scope.level, $scope.size);
-                var timeRecord = highscores.isInHighscore(hs_name, $scope.current_time);
-                if (timeRecord) {
-                    $scope.data = {};
-                    $ionicPopup.show({
-                        title: 'Record!',
-                        template: '<label>Enter your name:<input ng-model="data.name" type="text" placeholder="Your name" maxlength="' + $scope.MAX_NAME_LENGTH + '"></label>',
-                        scope: $scope,
-                        buttons: [
-                            {
-                                text: 'Cancel',
-                                type: 'button-assertive'
-                            },
-                            {
-                                text: '<b>OK</b>',
-                                type: 'button-positive',
-                                onTap: function () {
-                                    return $scope.data.name;
-                                }
-                            }
-                        ]
-                    }).then(function (name) {
-                        if (!name) {
-                            $scope.goTo("main");
-                        }
-                        else {
-                            highscores.addToHighScore(hs_name, {
-                                name: name.substring(0, $scope.MAX_NAME_LENGTH),
-                                val: { time: $scope.current_time, moves: $scope.moves },
-                                key: $scope.current_time
-                            });
-                            $scope.goTo("highscores");
-                        }
-                    });
-                }
-            }
-        };
-        $scope.makeMove = function (r, c) {
-            for (var i = r - 1; i <= r + 1; i++)
-                for (var j = c - 1; j <= c + 1; j++)
-                    if (i >= 0 && i < $scope.size.r && j >= 0 && j < $scope.size.c)
-                        $scope.matrix[i][j] = !$scope.matrix[i][j];
-        };
-        $scope.check = function () {
-            return !_.some($scope.matrix, function (row) {
-                return _.some(row);
-            });
-        };
-        $scope.randomMatrix = function (moves) {
-            var ubound = $scope.size.r * $scope.size.c;
-            for (var x = 0; x < moves; x++) {
-                var m = Math.floor(Math.random() * ubound);
-                var i = Math.floor(m / $scope.size.c);
-                var j = m % $scope.size.c;
-                $scope.makeMove(i, j);
-            }
-        };
-        $scope.home = function () {
-            $scope.goTo("main");
-        };
-        if ($localstorage.isDefined("matrix") && !$scope.newGame)
-            $scope.restoreData();
-        else
-            $scope.generate();
-        startTimer();
-    }])
+    .controller("reverseController", ReverseController)
     .controller('highscoresController', HighscoresController)
     .controller('howtoplayController', function () {
     return {};

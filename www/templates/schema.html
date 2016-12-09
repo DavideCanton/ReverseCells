@@ -1,35 +1,35 @@
 <ion-view>
-    <ion-header-bar align-title="center" class="bar-assertive" ng-class="{'bar-balanced': completed}">
+    <ion-header-bar align-title="center" class="bar-assertive" ng-class="{'bar-balanced': reverseCtrl.completed}">
         <button class="button button-clear" ng-click="rootCtrl.tryGoTo('main')">
             <i class="icon ion-android-arrow-back"></i>
         </button>
         <h1 class="title">
-            {{:: level.name + " - " + size.r + "x" + size.c }}
+            {{:: reverseCtrl.level.name + " - " + reverseCtrl.size.r + "x" + reverseCtrl.size.c }}
         </h1>
     </ion-header-bar>
     <div class="bar bar-subheader row">
-        <div class="col text-center subheader-text">Moves: {{ moves }}</div>
+        <div class="col text-center subheader-text">Moves: {{ reverseCtrl.moves }}</div>
 
-        <div class="col text-center subheader-text">Resets: {{ resets }}</div>
+        <div class="col text-center subheader-text">Resets: {{ reverseCtrl.resets }}</div>
 
-        <div class="col text-center subheader-text">{{ current_time | formatTime }}</div>
+        <div class="col text-center subheader-text">{{ reverseCtrl.current_time | formatTime }}</div>
     </div>
 
     <ion-content class="has-subheader">
         <ion-refresher pulling-text="Pull to reset level..."
-                       on-refresh="doRefresh()">
+                       on-refresh="reverseCtrl.doRefresh()">
         </ion-refresher>
 
         <ion-list> <!-- needed for ion-refresher -->
             <div id="content">
-                <div id="end_text" ng-show="completed">
+                <div id="end_text" ng-show="reverseCtrl.completed">
                     <h1 class="text-center balanced">Completed! :)</h1>
                 </div>
                 <table>
-                    <tr ng-repeat="i in [0, matrix.length] | makeRange">
-                        <td ng-repeat="j in [0, matrix[0].length] | makeRange"
-                            ng-click="clicked(i, j)">
-                            <div class="cell-container" ng-class="{flipped: matrix[i][j]}">
+                    <tr ng-repeat="i in [0, reverseCtrl.matrix.length] | makeRange">
+                        <td ng-repeat="j in [0, reverseCtrl.matrix[0].length] | makeRange"
+                            ng-click="reverseCtrl.clicked(i, j)">
+                            <div class="cell-container" ng-class="{flipped: reverseCtrl.matrix[i][j]}">
                                 <div class="cell-flipper">
                                     <div class="on-cell"></div>
                                     <div class="off-cell"></div>
@@ -40,10 +40,12 @@
                 </table>
 
                 <div class="popup-buttons">
-                    <button class="button button-balanced" ng-click="undo()" ng-disabled="lastMove === null">
+                    <button class="button button-balanced"
+                            ng-click="reverseCtrl.undo()"
+                            ng-disabled="reverseCtrl.lastMove === null">
                         Undo Last Move
                     </button>
-                    <button class="button button-assertive" ng-click="pause()">Pause</button>
+                    <button class="button button-assertive" ng-click="reverseCtrl.pause()">Pause</button>
                 </div>
             </div>
         </ion-list>

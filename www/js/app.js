@@ -56,7 +56,7 @@ app.config(function ($stateProvider, $urlRouterProvider) {
         .state('schema', {
         url: '/schema/:n/:s/:h',
         templateUrl: 'templates/schema.html',
-        controller: 'reverseController',
+        controller: 'reverseController as reverseCtrl',
         cache: false,
         data: {
             css: "css/schema.css"
