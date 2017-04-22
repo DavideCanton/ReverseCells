@@ -110,6 +110,9 @@ app.config(($stateProvider : IStateProvider, $urlRouterProvider : IUrlRouterProv
             url: '/choose_schema',
             templateUrl: 'templates/choose_schema.html',
             controller: 'chooseController as chooseCtrl',
+            data: {
+                css: "css/choose_schema.css"
+            }
         })
         .state('highscores', {
             url: '/highscores',

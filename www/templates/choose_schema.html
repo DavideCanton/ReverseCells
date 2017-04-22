@@ -6,15 +6,20 @@
         <h1 class="title">Choose Options</h1>
     </ion-header-bar>
     <ion-content>
-        <form>
-            <h3 class="title padding-top padding-left">Grid Size</h3>
-            <ion-radio name="size" ng-model="chooseCtrl.cur.size" ng-value="val" ng-repeat="val in ::SIZES">
-                {{::val.r + "x" + val.c}}
-            </ion-radio>
-            <h3 class="title padding-top padding-left">Difficulty</h3>
-            <ion-radio name="level" ng-model="chooseCtrl.cur.level" ng-value="val" ng-repeat="val in ::DIFFICULTIES">
-                {{::val.name}}
-            </ion-radio>
+        <form class="choose-schema-form">
+            <div class="choose-schema-btns">
+                <h3 class="title padding-top padding-left">Grid Size</h3>
+                <ion-radio name="size" ng-model="chooseCtrl.cur.size" ng-value="val" ng-repeat="val in ::SIZES">
+                    {{::val.r + "x" + val.c}}
+                </ion-radio>
+            </div>
+            <div class="choose-schema-btns">
+                <h3 class="title padding-top padding-left">Difficulty</h3>
+                <ion-radio name="level" ng-model="chooseCtrl.cur.level" ng-value="val"
+                           ng-repeat="val in ::DIFFICULTIES">
+                    {{::val.name}}
+                </ion-radio>
+            </div>
             <div class="popup-buttons">
                 <button class="button button-positive padding-horizontal" ng-click="chooseCtrl.ok()">OK</button>
             </div>

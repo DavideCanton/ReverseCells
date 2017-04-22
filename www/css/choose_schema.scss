@@ -1,0 +1,38 @@
+.choose-schema-form
+{
+    margin: 0 auto;
+
+    .choose-schema-btns
+    {
+        .item
+        {
+            display: inline-block;
+            width: calc(33% - 20px);
+            margin: 0 10px;
+            height: 100px;
+            border-radius: 5px;
+            background: rgba(0, 128, 0, 0.31);
+
+            .item-content
+            {
+                padding: 0;
+                background: transparent;
+                line-height: 100px;
+                text-align: center;
+                font-size: 22px;
+                font-style: italic;
+            }
+
+            .radio-icon
+            {
+                display: none;
+            }
+
+            &.item-radio input:checked ~ .item-content
+            {
+                background: rgba(255, 0, 0, 0.62);
+            }
+        }
+
+    }
+}

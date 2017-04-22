@@ -36,8 +36,8 @@
     .main-row button {
       margin-bottom: 10px; } }
 .img-title {
-  background-size: contain;
   background: url("/img/title.png") no-repeat 50%;
+  background-size: contain;
   top: 0;
   bottom: 0;
   left: 0;
