@@ -8,7 +8,7 @@ angular.module('reverseApp.filters', [])
     {
         return (input : string[]) : (string[] | number[]) =>
         {
-            let lowBound, highBound;
+            let lowBound: number, highBound: number;
             switch (input.length)
             {
                 case 1:
