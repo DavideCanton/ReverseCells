@@ -1,6 +1,6 @@
 {
   "name": "ReverseCells",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "dependencies": {
     "clean-css": "^4.1.11",
     "gulp": "^4.0.2",
