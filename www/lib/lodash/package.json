@@ -43,7 +43,7 @@
     "fs-extra": "~1.0.0",
     "glob": "^7.1.4",
     "istanbul": "0.4.5",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "jscs": "^3.0.7",
     "lodash": "4.17.14",
     "lodash-doc-globals": "^0.1.1",
