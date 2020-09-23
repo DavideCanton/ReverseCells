@@ -1228,9 +1228,9 @@ doctrine@^2.0.0:
     esutils "^2.0.2"
     isarray "^1.0.0"
 
-dojo@^1.15.0:
-  version "1.16.3"
-  resolved "https://registry.yarnpkg.com/dojo/-/dojo-1.16.3.tgz#f9d2343184b5e5ffda2ee5666029da20508e1013"
+dojo@^1.15.3:
+  version "1.15.3"
+  resolved "https://registry.yarnpkg.com/dojo/-/dojo-1.15.3.tgz#d45adae816683a05b654c329bf255c4c08812571"
 
 dom-serializer@0, dom-serializer@~0.1.0:
   version "0.1.0"
